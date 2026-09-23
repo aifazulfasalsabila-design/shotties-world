@@ -3,372 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Shotties World - Guess the Song!</title>
-    <!-- Canvas Confetti Library -->
+    <title>LNGSHOT - seberapa lngshot kamu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
-        
         body {
-            background-color: #0d0f12;
-            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #09090e;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            overflow-x: hidden;
         }
-
-        .game-card {
-            background: rgba(20, 22, 29, 0.95);
-            border: 3px solid #ff0055;
-            border-radius: 20px;
-            padding: 20px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 0 25px rgba(ff, 0, 85, 0.3);
-            position: relative;
-            text-align: center;
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass-card {
+            background: rgba(18, 18, 28, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.2);
         }
-
-        /* LANDING PAGE STYLE */
-        #landingPage {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('bg-pixel.jpg');
-            background-size: cover;
-            background-position: center;
-            border-radius: 16px;
-            padding: 40px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 380px;
-            border: 2px solid #00ffcc;
-        }
-
-        .title-text {
-            font-size: 22px;
-            color: #00ffcc;
-            text-shadow: 3px 3px #ff0055;
-            font-weight: bold;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1.3;
-        }
-
-        .btn-start {
-            background: #ff0055;
-            color: #fff;
-            border: 2px solid #fff;
-            padding: 14px 28px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 0, 85, 0.5);
-            transition: 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-start:hover {
-            transform: scale(1.05);
-            background: #00ffcc;
-            color: #000;
-            border-color: #000;
-        }
-
-        /* GAMEPLAY STYLE */
-        #gamePage { display: none; }
-
-        .header-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px dashed #333;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-size: 13px;
-        }
-
-        .lives { color: #ff0055; font-size: 16px; }
-        .score { color: #00ffcc; font-weight: bold; }
-
-        .audio-box {
-            background: #1a1d26;
-            border: 2px solid #00ffcc;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn-audio {
-            background: #00ffcc;
-            color: #000;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .choices-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn-choice {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #333;
-            color: #fff;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: inherit;
-            text-transform: capitalize;
-        }
-
-        .btn-choice:hover {
-            border-color: #00ffcc;
-            background: rgba(0, 255, 204, 0.1);
-        }
-
-        /* WOONIN MEME POP-UP */
-        #memeOverlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            border-radius: 18px;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            padding: 20px;
-        }
-
-        #memeOverlay img {
-            width: 180px;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 15px;
-            border: 3px solid #ff0055;
-            margin-bottom: 12px;
-            animation: pop 0.3s ease-out;
-        }
-
-        @keyframes pop {
-            0% { transform: scale(0.5); }
-            100% { transform: scale(1); }
-        }
-
-        .meme-text {
-            color: #ff0055;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        /* END SCREEN */
-        #endPage {
-            display: none;
-            padding: 20px 0;
-        }
-
-        .end-title {
-            font-size: 20px;
-            color: #00ffcc;
-            margin-bottom: 15px;
-        }
-
-        .final-score {
-            font-size: 32px;
-            color: #ff0055;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
+        .soundwave-bar { animation: soundwave 1.2s ease-in-out infinite alternate; }
+        .soundwave-bar:nth-child(2n) { animation-delay: 0.2s; }
+        .soundwave-bar:nth-child(3n) { animation-delay: 0.4s; }
+        .soundwave-bar:nth-child(4n) { animation-delay: 0.6s; }
+        @keyframes soundwave { 0% { height: 8px; } 100% { height: 48px; } }
+        .soundwave-paused .soundwave-bar { animation-play-state: paused !important; height: 6px !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+        .animate-shake { animation: shake 0.4s ease-in-out; }
     </style>
 </head>
-<body>
+<body class="text-white flex items-center justify-center p-4 min-h-screen">
 
-<div class="game-card">
-    
-    <!-- LANDING PAGE -->
-    <div id="landingPage">
-        <div class="title-text">Welcome to<br>Shotties World</div>
-        <button class="btn-start" onclick="startGame()">MULAI GAME 🎵</button>
-    </div>
-
-    <!-- GAMEPLAY PAGE -->
-    <div id="gamePage">
-        <div class="header-status">
-            <span class="lives" id="livesDisplay">❤️❤️❤️❤️❤️</span>
-            <span id="questionNum">SOAL 1/15</span>
-            <span class="score" id="scoreDisplay">POIN: 0</span>
+    <div id="game-container" class="w-full max-w-lg glass-card rounded-3xl p-6 relative overflow-hidden transition-all duration-300">
+        
+        <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-compact-disc text-pink-500 text-2xl animate-spin" style="animation-duration: 4s;"></i>
+                <span class="font-orbitron font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400 text-lg tracking-wider">LNGSHOT</span>
+            </div>
+            
+            <div class="flex items-center gap-3 font-orbitron text-sm">
+                <div id="combo-badge" class="hidden bg-gradient-to-r from-amber-500 to-red-500 px-2.5 py-1 rounded-full text-xs font-bold animate-bounce shadow-lg">
+                    <i class="fa-solid fa-fire mr-1"></i><span id="combo-count">2</span>x POIN
+                </div>
+                <div class="bg-white/5 border border-white/10 px-3 py-1 rounded-full text-gray-300">
+                    <i class="fa-solid fa-trophy text-amber-400 mr-1"></i><span id="high-score-display">0</span>
+                </div>
+                <div class="bg-pink-500/20 border border-pink-500/40 px-3 py-1 rounded-full text-pink-300 font-bold">
+                    <span id="score-display">0</span>
+                </div>
+            </div>
         </div>
 
-        <div class="audio-box">
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 10px;">Dengerin potongan lagunya:</p>
-            <button class="btn-audio" onclick="playAudio()">▶️ PUTAR LAGU</button>
-            <audio id="audioPlayer"></audio>
+        <!-- START SCREEN -->
+        <div id="start-screen" class="text-center py-8 space-y-6">
+            <div class="w-28 h-28 mx-auto rounded-full bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 p-1">
+                <div class="w-full h-full bg-gray-950 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-music text-4xl text-pink-400"></i>
+                </div>
+            </div>
+
+            <div>
+                <h1 class="text-3xl font-extrabold font-orbitron tracking-wide text-white mb-2">TEBAK LAGU LNGSHOT</h1>
+                <p class="text-gray-400 text-sm max-w-xs mx-auto">Uji seberapa Shotties kamu!</p>
+            </div>
+
+            <div class="bg-white/5 rounded-2xl p-4 text-left border border-white/10 text-xs space-y-2 text-gray-300">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-stopwatch text-pink-400 text-sm w-5"></i><span><strong>15 Detik</strong> per soal untuk menebak.</span></div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-400 text-sm w-5"></i><span>Jawab cepat untuk bonus poin & combo!</span></div>
+            </div>
+
+            <button onclick="startGame()" class="w-full py-4 bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 rounded-2xl font-orbitron font-bold text-base tracking-wider shadow-lg shadow-pink-500/25">
+                MULAI PERMAINAN <i class="fa-solid fa-play ml-2"></i>
+            </button>
         </div>
 
-        <div class="choices-container" id="choicesBox"></div>
+        <!-- GAMEPLAY SCREEN -->
+        <div id="game-screen" class="hidden space-y-6">
+            <div class="flex justify-between items-center text-xs font-orbitron text-gray-400">
+                <span>SOAL <span id="current-question-num" class="text-pink-400 font-bold">1</span> / <span id="total-questions-num">15</span></span>
+                <span class="bg-purple-500/20 text-purple-300 px-2.5 py-0.5 rounded-full border border-purple-500/30">LNGSHOT TRACKS</span>
+            </div>
+
+            <div class="space-y-1">
+                <div class="flex justify-between items-center text-xs text-gray-400 font-orbitron">
+                    <span><i class="fa-solid fa-clock text-pink-400 mr-1"></i> SISA WAKTU</span>
+                    <span id="timer-text" class="font-bold text-pink-400">15.0s</span>
+                </div>
+                <div class="w-full bg-white/10 h-3 rounded-full overflow-hidden p-0.5 border border-white/10">
+                    <div id="timer-bar" class="h-full bg-gradient-to-r from-pink-500 to-purple-500 rounded-full w-full"></div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-b from-white/10 to-white/5 border border-white/15 rounded-2xl p-5 text-center relative">
+                <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-500/30 to-purple-600/30 border border-white/20 flex items-center justify-center">
+                    <i class="fa-solid fa-record-vinyl text-5xl text-pink-400 animate-spin" style="animation-duration: 8s;" id="vinyl-icon"></i>
+                </div>
+
+                <div id="soundwave-container" class="flex items-center justify-center gap-1.5 h-12 my-2">
+                    <div class="soundwave-bar w-1.5 bg-pink-500 rounded-full"></div>
+                    <div class="soundwave-bar w-1.5 bg-purple-500 rounded-full"></div>
+                    <div class="soundwave-bar w-1.5 bg-cyan-400 rounded-full"></div>
+                    <div class="soundwave-bar w-1.5 bg-pink-400 rounded-full"></div>
+                    <div class="soundwave-bar w-1.5 bg-purple-400 rounded-full"></div>
+                </div>
+
+                <p class="text-sm font-semibold text-gray-300 mt-2">Dengerin lagunya, tebak judulnya!</p>
+            </div>
+
+            <div id="options-grid" class="grid grid-cols-1 gap-3"></div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="hidden text-center py-6 space-y-6">
+            <div class="inline-block p-4 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400">
+                <i class="fa-solid fa-award text-5xl"></i>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold font-orbitron text-white">GAME SELESAI!</h2>
+                <p id="result-evaluation" class="text-sm text-gray-400 mt-1">Kamu beneran fans sejati LNGSHOT!</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-left">
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <p class="text-xs text-gray-400 font-orbitron">SKOR AKHIR</p>
+                    <p id="final-score" class="text-2xl font-black font-orbitron text-pink-400 mt-1">0</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <p class="text-xs text-gray-400 font-orbitron">AKURASI</p>
+                    <p id="final-accuracy" class="text-2xl font-black font-orbitron text-cyan-400 mt-1">0%</p>
+                </div>
+            </div>
+
+            <button onclick="startGame()" class="w-full py-3.5 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl font-orbitron font-bold text-sm tracking-wider">
+                MAIN LAGI <i class="fa-solid fa-rotate-right ml-1"></i>
+            </button>
+        </div>
+
     </div>
 
-    <!-- OVERLAY MEME WOOJIN -->
-    <div id="memeOverlay">
-        <img src="woojin-meme.jpg" alt="Meme Woojin">
-        <div class="meme-text">SALAH ZONK! 😜</div>
-        <p style="font-size: 11px; color: #aaa; margin-top: 5px;">Nyawa berkurang 1...</p>
-    </div>
+    <audio id="audio-player" preload="auto"></audio>
 
-    <!-- END PAGE -->
-    <div id="endPage">
-        <div class="end-title" id="endTitle">GAME OVER</div>
-        <div class="final-score" id="finalScore">0 POIN</div>
-        <button class="btn-start" onclick="location.reload()">🔄 MAIN LAGI</button>
-    </div>
+    <script>
+        const songDatabase = [
+            { src: "lagu1.mp3", options: ["LNGSHOT - Moonlight", "LNGSHOT - Overdrive", "LNGSHOT - Cyber Pulse"], correct: 0 },
+            { src: "lagu2.mp3", options: ["LNGSHOT - Starlight", "LNGSHOT - Midnight Drive", "LNGSHOT - Echoes"], correct: 1 },
+            { src: "lagu3.mp3", options: ["LNGSHOT - High Velocity", "LNGSHOT - Neon City", "LNGSHOT - Cyber Pulse"], correct: 2 },
+            { src: "lagu4.mp3", options: ["LNGSHOT - Overdrive", "LNGSHOT - Future Beats", "LNGSHOT - Skyline"], correct: 0 },
+            { src: "lagu5.mp3", options: ["LNGSHOT - Electric Dreams", "LNGSHOT - Afterburner", "LNGSHOT - Synth Wave"], correct: 1 },
+            { src: "lagu6.mp3", options: ["LNGSHOT - Hologram", "LNGSHOT - Turbo Charge", "LNGSHOT - Last Dance"], correct: 2 },
+            { src: "lagu7.mp3", options: ["LNGSHOT - Speed Limit", "LNGSHOT - Echoes of Tomorrow", "LNGSHOT - Lost Memory"], correct: 0 },
+            { src: "lagu8.mp3", options: ["LNGSHOT - Synth Wave", "LNGSHOT - Midnight Drive", "LNGSHOT - Cyber Pulse"], correct: 1 },
+            { src: "lagu9.mp3", options: ["LNGSHOT - Future Beats", "LNGSHOT - Overdrive", "LNGSHOT - Neon City"], correct: 2 },
+            { src: "lagu10.mp3", options: ["LNGSHOT - Skyline", "LNGSHOT - Starlight", "LNGSHOT - High Velocity"], correct: 0 },
+            { src: "lagu11.mp3", options: ["LNGSHOT - Last Dance", "LNGSHOT - Afterburner", "LNGSHOT - Electric Dreams"], correct: 1 },
+            { src: "lagu12.mp3", options: ["LNGSHOT - Lost Memory", "LNGSHOT - Hologram", "LNGSHOT - Turbo Charge"], correct: 2 },
+            { src: "lagu13.mp3", options: ["LNGSHOT - Turbo Charge", "LNGSHOT - Speed Limit", "LNGSHOT - Echoes of Tomorrow"], correct: 0 },
+            { src: "lagu14.mp3", options: ["LNGSHOT - Echoes of Tomorrow", "LNGSHOT - Synth Wave", "LNGSHOT - Midnight Drive"], correct: 1 },
+            { src: "lagu15.mp3", options: ["LNGSHOT - Afterburner", "LNGSHOT - Future Beats", "LNGSHOT - Overdrive"], correct: 2 }
+        ];
 
-</div>
+        let currentQuestionIndex = 0, score = 0, highScore = localStorage.getItem('lngshot_highscore') || 0, combo = 0, correctAnswersCount = 0;
+        const TIMER_DURATION = 15;
+        let timeRemaining = TIMER_DURATION, timerInterval = null, isAnswered = false;
+        let audioCtx = null;
+        const audioElement = document.getElementById('audio-player');
 
-<script>
-    // Data 15 Soal
-    const questions = [
-        { audio: "lagu1.mp3", ans: "saucin", opts: ["saucin", "thinking", "all good"] },
-        { audio: "lagu2.mp3", ans: "never let go", opts: ["vanilla days", "ejeh", "never let go"] },
-        { audio: "lagu3.mp3", ans: "moonwalkin'", opts: ["moonwalkin'", "facetime", "boo thang"] },
-        { audio: "lagu4.mp3", ans: "moya", opts: ["backseat", "moya", "summer eyes"] },
-        { audio: "lagu5.mp3", ans: "vanilla days", opts: ["vanilla days", "my side", "good girls"] },
-        { audio: "lagu6.mp3", ans: "ejeh", opts: ["thinking", "now us", "ejeh"] },
-        { audio: "lagu7.mp3", ans: "fire with fire", opts: ["fire with fire", "facetime", "trust myself"] },
-        { audio: "lagu8.mp3", ans: "my side", opts: ["good girls", "boo thang", "my side"] },
-        { audio: "lagu9.mp3", ans: "summer eyes", opts: ["summer eyes", "for us", "are you ready"] },
-        { audio: "lagu10.mp3", ans: "good girls", opts: ["boo thang", "good girls", "my side"] },
-        { audio: "lagu11.mp3", ans: "gukbbong", opts: ["gukbbong", "4sho 4sho", "yeah yeah"] },
-        { audio: "lagu12.mp3", ans: "thinking", opts: ["no hi no hey", "thinking", "trust myself"] },
-        { audio: "lagu13.mp3", ans: "run it up", opts: ["next u2", "backseat", "run it up"] },
-        { audio: "lagu14.mp3", ans: "4sho 4sho", opts: ["4sho 4sho", "are you ready", "yeah yeah"] },
-        { audio: "lagu15.mp3", ans: "yeah yeah", opts: ["gukkbong", "are you ready", "yeah yeah"] }
-    ];
+        document.getElementById('high-score-display').textContent = highScore;
 
-    let currentIdx = 0;
-    let lives = 5;
-    let score = 0;
-
-    const audioPlayer = document.getElementById("audioPlayer");
-
-    // Audio efek cheer pas bener (pake Web Audio API biar gratisan tanpa file)
-    function playCheerSound() {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.3);
-    }
-
-    function startGame() {
-        document.getElementById("landingPage").style.display = "none";
-        document.getElementById("gamePage").style.display = "block";
-        loadQuestion();
-    }
-
-    function playAudio() {
-        audioPlayer.play();
-    }
-
-    function loadQuestion() {
-        if (currentIdx >= questions.length) {
-            endGame(true);
-            return;
+        function playSFX(type) {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+            if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.08);
+                osc.frequency.setValueAtTime(783.99, now + 0.16);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
+            }
         }
 
-        const q = questions[currentIdx];
-        document.getElementById("questionNum").innerText = `SOAL ${currentIdx + 1}/15`;
-        audioPlayer.src = q.audio;
+        function playAudioSnippet() {
+            audioElement.pause();
+            audioElement.currentTime = 0;
+            const currentSong = songDatabase[currentQuestionIndex];
+            audioElement.src = currentSong.src;
+            audioElement.play().catch(e => console.log(e));
+            document.getElementById('soundwave-container').classList.remove('soundwave-paused');
+            document.getElementById('vinyl-icon').classList.add('animate-spin');
+        }
 
-        const box = document.getElementById("choicesBox");
-        box.innerHTML = "";
+        function stopAudioSnippet() {
+            audioElement.pause();
+            document.getElementById('soundwave-container').classList.add('soundwave-paused');
+            document.getElementById('vinyl-icon').classList.remove('animate-spin');
+        }
 
-        q.opts.forEach(opt => {
-            const btn = document.createElement("button");
-            btn.className = "btn-choice";
-            btn.innerText = opt;
-            btn.onclick = () => checkAnswer(opt);
-            box.appendChild(btn);
-        });
-    }
+        function startGame() {
+            score = 0; combo = 0; correctAnswersCount = 0; currentQuestionIndex = 0;
+            document.getElementById('score-display').textContent = '0';
+            document.getElementById('combo-badge').classList.add('hidden');
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('total-questions-num').textContent = songDatabase.length;
+            loadQuestion();
+        }
 
-    function checkAnswer(selected) {
-        audioPlayer.pause();
-        const q = questions[currentIdx];
+        function loadQuestion() {
+            isAnswered = false; timeRemaining = TIMER_DURATION;
+            const question = songDatabase[currentQuestionIndex];
+            document.getElementById('current-question-num').textContent = currentQuestionIndex + 1;
+            
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = '';
+            question.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full py-3.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-left font-semibold text-sm transition-all duration-200 flex items-center justify-between group`;
+                btn.onclick = () => checkAnswer(index, btn);
+                btn.innerHTML = `<span class="flex items-center gap-3"><span class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center font-orbitron text-xs">${String.fromCharCode(65 + index)}</span><span>${optText}</span></span>`;
+                optionsGrid.appendChild(btn);
+            });
 
-        if (selected === q.ans) {
-            // JAWABAN BENAR
-            score += 10;
-            document.getElementById("scoreDisplay").innerText = `POIN: ${score}`;
-            playCheerSound();
-            confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
+            playAudioSnippet();
+            startTimer();
+        }
 
-            currentIdx++;
-            setTimeout(loadQuestion, 800);
-        } else {
-            // JAWABAN SALAH
-            lives--;
-            updateLives();
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeRemaining -= 0.1;
+                if (timeRemaining <= 0) {
+                    timeRemaining = 0;
+                    clearInterval(timerInterval);
+                    checkAnswer(-1, null);
+                }
+                document.getElementById('timer-text').textContent = timeRemaining.toFixed(1) + 's';
+                document.getElementById('timer-bar').style.width = ((timeRemaining / TIMER_DURATION) * 100) + '%';
+            }, 100);
+        }
 
-            // TAMPILKAN MEME WOOJIN
-            const overlay = document.getElementById("memeOverlay");
-            overlay.style.display = "flex";
+        function checkAnswer(selectedIndex, clickedBtn) {
+            if (isAnswered) return;
+            isAnswered = true;
+            clearInterval(timerInterval);
+            stopAudioSnippet();
+
+            const question = songDatabase[currentQuestionIndex];
+            const isCorrect = selectedIndex === question.correct;
+            const allButtons = document.getElementById('options-grid').querySelectorAll('button');
+
+            allButtons.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                playSFX('correct');
+                correctAnswersCount++;
+                combo++;
+                score += 100 + Math.round(timeRemaining * 5);
+                document.getElementById('score-display').textContent = score;
+
+                if (combo > 1) {
+                    document.getElementById('combo-count').textContent = combo;
+                    document.getElementById('combo-badge').classList.remove('hidden');
+                }
+
+                clickedBtn.className = "w-full py-3.5 px-4 rounded-xl bg-emerald-500/80 border-2 border-emerald-400 text-white font-semibold text-sm flex items-center justify-between";
+                confetti({ particleCount: 25, spread: 60, origin: { y: 0.7 } });
+            } else {
+                playSFX('wrong');
+                combo = 0;
+                document.getElementById('combo-badge').classList.add('hidden');
+                if (clickedBtn) clickedBtn.className = "w-full py-3.5 px-4 rounded-xl bg-red-600/80 border-2 border-red-400 text-white font-semibold text-sm flex items-center justify-between";
+                const correctBtn = allButtons[question.correct];
+                if (correctBtn) correctBtn.className = "w-full py-3.5 px-4 rounded-xl bg-emerald-500/30 border-2 border-emerald-400 text-emerald-200 font-semibold text-sm flex items-center justify-between";
+            }
 
             setTimeout(() => {
-                overlay.style.display = "none";
-                if (lives <= 0) {
-                    endGame(false);
-                } else {
-                    currentIdx++;
-                    loadQuestion();
-                }
-            }, 1500);
-        }
-    }
-
-    function updateLives() {
-        let hearts = "";
-        for (let i = 0; i < lives; i++) hearts += "❤️";
-        document.getElementById("livesDisplay").innerText = hearts || "💀";
-    }
-
-    function endGame(isWin) {
-        document.getElementById("gamePage").style.display = "none";
-        document.getElementById("endPage").style.display = "block";
-
-        if (isWin) {
-            document.getElementById("endTitle").innerText = "🎉 SELAMAT! TAMAT!";
-            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
-        } else {
-            document.getElementById("endTitle").innerText = "💀 GAME OVER!";
+                currentQuestionIndex++;
+                if (currentQuestionIndex < songDatabase.length) loadQuestion();
+                else endGame();
+            }, 1800);
         }
 
-        document.getElementById("finalScore").innerText = `TOTAL POIN: ${score}`;
-    }
-</script>
+        function endGame() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
 
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('lngshot_highscore', highScore);
+                document.getElementById('high-score-display').textContent = highScore;
+                confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+            }
+
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('final-accuracy').textContent = Math.round((correctAnswersCount / songDatabase.length) * 100) + '%';
+        }
+    </script>
 </body>
-  </html>
-      
+</html>
