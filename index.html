@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LNGSHOT - seberapa lngshot kamu</title>
+    <title>LNGSHOT - Tebak Lagu Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,7 +115,7 @@
                     <div class="soundwave-bar w-1.5 bg-purple-400 rounded-full"></div>
                 </div>
 
-                <p class="text-sm font-semibold text-gray-300 mt-2">Dengerin lagunya, tebak judulnya!</p>
+                <p class="text-sm font-semibold text-gray-300 mt-2">jangan ngaku shotties kalo ga bisa nebak!</p>
             </div>
 
             <div id="options-grid" class="grid grid-cols-1 gap-3"></div>
@@ -129,7 +129,7 @@
 
             <div>
                 <h2 class="text-2xl font-bold font-orbitron text-white">GAME SELESAI!</h2>
-                <p id="result-evaluation" class="text-sm text-gray-400 mt-1">Kamu beneran fans sejati LNGSHOT!</p>
+                <p id="result-evaluation" class="text-sm text-gray-400 mt-1">💯 buat shotties kita!</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3 text-left">
@@ -154,21 +154,21 @@
 
     <script>
         const songDatabase = [
-            { src: "lagu1.mp3", options: ["LNGSHOT - Moonlight", "LNGSHOT - Overdrive", "LNGSHOT - Cyber Pulse"], correct: 0 },
-            { src: "lagu2.mp3", options: ["LNGSHOT - Starlight", "LNGSHOT - Midnight Drive", "LNGSHOT - Echoes"], correct: 1 },
-            { src: "lagu3.mp3", options: ["LNGSHOT - High Velocity", "LNGSHOT - Neon City", "LNGSHOT - Cyber Pulse"], correct: 2 },
-            { src: "lagu4.mp3", options: ["LNGSHOT - Overdrive", "LNGSHOT - Future Beats", "LNGSHOT - Skyline"], correct: 0 },
-            { src: "lagu5.mp3", options: ["LNGSHOT - Electric Dreams", "LNGSHOT - Afterburner", "LNGSHOT - Synth Wave"], correct: 1 },
-            { src: "lagu6.mp3", options: ["LNGSHOT - Hologram", "LNGSHOT - Turbo Charge", "LNGSHOT - Last Dance"], correct: 2 },
-            { src: "lagu7.mp3", options: ["LNGSHOT - Speed Limit", "LNGSHOT - Echoes of Tomorrow", "LNGSHOT - Lost Memory"], correct: 0 },
-            { src: "lagu8.mp3", options: ["LNGSHOT - Synth Wave", "LNGSHOT - Midnight Drive", "LNGSHOT - Cyber Pulse"], correct: 1 },
-            { src: "lagu9.mp3", options: ["LNGSHOT - Future Beats", "LNGSHOT - Overdrive", "LNGSHOT - Neon City"], correct: 2 },
-            { src: "lagu10.mp3", options: ["LNGSHOT - Skyline", "LNGSHOT - Starlight", "LNGSHOT - High Velocity"], correct: 0 },
-            { src: "lagu11.mp3", options: ["LNGSHOT - Last Dance", "LNGSHOT - Afterburner", "LNGSHOT - Electric Dreams"], correct: 1 },
-            { src: "lagu12.mp3", options: ["LNGSHOT - Lost Memory", "LNGSHOT - Hologram", "LNGSHOT - Turbo Charge"], correct: 2 },
-            { src: "lagu13.mp3", options: ["LNGSHOT - Turbo Charge", "LNGSHOT - Speed Limit", "LNGSHOT - Echoes of Tomorrow"], correct: 0 },
-            { src: "lagu14.mp3", options: ["LNGSHOT - Echoes of Tomorrow", "LNGSHOT - Synth Wave", "LNGSHOT - Midnight Drive"], correct: 1 },
-            { src: "lagu15.mp3", options: ["LNGSHOT - Afterburner", "LNGSHOT - Future Beats", "LNGSHOT - Overdrive"], correct: 2 }
+            { src: "lagu1.mp3", options: ["saucin", "thinking", "all good"], correct: 0 },
+            { src: "lagu2.mp3", options: ["vanilla days", "ejeh", "never let go"], correct: 2 },
+            { src: "lagu3.mp3", options: ["moonwalkin'", "facetime", "boo thang"], correct: 0 },
+            { src: "lagu4.mp3", options: ["backseat", "moya", "summer eyes"], correct: 1 },
+            { src: "lagu5.mp3", options: ["vanilla days", "my side", "good girls"], correct: 0 },
+            { src: "lagu6.mp3", options: ["thinking", "now us", "ejeh"], correct: 2 },
+            { src: "lagu7.mp3", options: ["fire with fire", "facetime", "trust myself"], correct: 0 },
+            { src: "lagu8.mp3", options: ["good girls", "boo thang", "my side"], correct: 2 },
+            { src: "lagu9.mp3", options: ["summer eyes", "for us", "are you ready"], correct: 0 },
+            { src: "lagu10.mp3", options: ["boo thang", "good girls", "my side"], correct: 1 },
+            { src: "lagu11.mp3", options: ["gukbbong", "4sho 4sho", "yeah yeah"], correct: 0 },
+            { src: "lagu12.mp3", options: ["no hi no hey", "thinking", "trust myself"], correct: 1 },
+            { src: "lagu13.mp3", options: ["next u2", "backseat", "run it up"], correct: 2 },
+            { src: "lagu14.mp3", options: ["4sho 4sho", "are you ready", "yeah yeah"], correct: 0 },
+            { src: "lagu15.mp3", options: ["gukbbong", "are you ready", "yeah yeah"], correct: 2 }
         ];
 
         let currentQuestionIndex = 0, score = 0, highScore = localStorage.getItem('lngshot_highscore') || 0, combo = 0, correctAnswersCount = 0;
@@ -319,4 +319,5 @@
         }
     </script>
 </body>
-</html>
+            </html>
+    
