@@ -13,19 +13,9 @@
 
     <style>
         body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: #09090e url('bg-pixel.jpg') no-repeat center center fixed;
-    background-size: cover;
-    min-height: 100vh;
-        }
-        
-        body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #09090e;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+            background: #09090e url('bg-pixel.jpg') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
         }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
@@ -42,8 +32,6 @@
         .soundwave-bar:nth-child(4n) { animation-delay: 0.6s; }
         @keyframes soundwave { 0% { height: 8px; } 100% { height: 48px; } }
         .soundwave-paused .soundwave-bar { animation-play-state: paused !important; height: 6px !important; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
-        .animate-shake { animation: shake 0.4s ease-in-out; }
     </style>
 </head>
 <body class="text-white flex items-center justify-center p-4 min-h-screen">
@@ -88,7 +76,7 @@
             </div>
 
             <button onclick="startGame()" class="w-full py-4 bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 rounded-2xl font-orbitron font-bold text-base tracking-wider shadow-lg shadow-pink-500/25">
-                MULAI PERMAINAN <i class="fa-solid fa-play ml-2"></i>
+                GAME START <i class="fa-solid fa-play ml-2"></i>
             </button>
         </div>
 
@@ -122,7 +110,7 @@
                     <div class="soundwave-bar w-1.5 bg-purple-400 rounded-full"></div>
                 </div>
 
-                <p class="text-sm font-semibold text-gray-300 mt-2">jangan ngaku shotties kalo ga bisa nebak!</p>
+                <p class="text-sm font-semibold text-gray-300 mt-2">jangan ngaku shotties kalo ga bisa jawab!</p>
             </div>
 
             <div id="options-grid" class="grid grid-cols-1 gap-3"></div>
@@ -270,17 +258,6 @@
 
         function checkAnswer(selectedIndex, clickedBtn) {
             if (isAnswered) return;
-                        } else {
-                playSFX('wrong');
-                combo = 0;
-                document.getElementById('combo-badge').classList.add('hidden');
-                if (clickedBtn) clickedBtn.className = "w-full py-3.5 px-4 rounded-xl bg-red-600/80 border-2 border-red-400 text-white font-semibold text-sm flex items-center justify-between";
-                const correctBtn = allButtons[question.correct];
-                if (correctBtn) correctBtn.className = "w-full py-3.5 px-4 rounded-xl bg-emerald-500/30 border-2 border-emerald-400 text-emerald-200 font-semibold text-sm flex items-center justify-between";
-
-                // TAMBAHAN: Pop-up meme Woojin pas salah
-                showWoojinMeme();
-        }
             isAnswered = true;
             clearInterval(timerInterval);
             stopAudioSnippet();
@@ -312,6 +289,8 @@
                 if (clickedBtn) clickedBtn.className = "w-full py-3.5 px-4 rounded-xl bg-red-600/80 border-2 border-red-400 text-white font-semibold text-sm flex items-center justify-between";
                 const correctBtn = allButtons[question.correct];
                 if (correctBtn) correctBtn.className = "w-full py-3.5 px-4 rounded-xl bg-emerald-500/30 border-2 border-emerald-400 text-emerald-200 font-semibold text-sm flex items-center justify-between";
+                
+                showWoojinMeme();
             }
 
             setTimeout(() => {
@@ -319,6 +298,19 @@
                 if (currentQuestionIndex < songDatabase.length) loadQuestion();
                 else endGame();
             }, 1800);
+        }
+
+        function showWoojinMeme() {
+            const popup = document.createElement('div');
+            popup.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm";
+            popup.innerHTML = `
+                <div class="bg-gray-900 border border-white/20 p-4 rounded-2xl max-w-xs text-center space-y-3 shadow-2xl">
+                    <img src="woojin-meme.jpg" alt="Woojin Meme" class="w-48 h-48 mx-auto rounded-xl object-cover border border-red-500/50">
+                    <p class="font-orbitron font-bold text-red-400 text-sm">WAAH SALAH! 😭</p>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(() => { popup.remove(); }, 1200);
         }
 
         function endGame() {
@@ -336,20 +328,6 @@
             document.getElementById('final-accuracy').textContent = Math.round((correctAnswersCount / songDatabase.length) * 100) + '%';
         }
     </script>
-            function showWoojinMeme() {
-            const popup = document.createElement('div');
-            popup.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in";
-            popup.innerHTML = `
-                <div class="bg-gray-900 border border-white/20 p-4 rounded-2xl max-w-xs text-center space-y-3 shadow-2xl">
-                    <img src="woojin-meme.jpg" alt="Woojin Meme" class="w-48 h-48 mx-auto rounded-xl object-cover border border-red-500/50">
-                    <p class="font-orbitron font-bold text-red-400 text-sm">WAAH SALAH! 😭</p>
-                </div>
-            `;
-            document.body.appendChild(popup);
-            setTimeout(() => {
-                popup.remove();
-            }, 1200); // Meme bakal muncul selama 1.2 detik
-        }
 </body>
-            </html>
-    
+    </html>
+                                                             
